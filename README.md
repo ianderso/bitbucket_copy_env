@@ -28,7 +28,7 @@ Then install python requirements with:
 ## Usage
 
 ```
-usage: BitbucketCopyEnv.py [-h] -u USERNAME -p PASSWORD --workspace WORKSPACE -r REPOSITORY -s SOURCE -d DEST
+usage: BitbucketCopyEnv.py [-h] -u USERNAME -p PASSWORD --workspace WORKSPACE -r REPOSITORY -s SOURCE -d DEST [--env_type {Test,Staging,Production}]
 
 options:
   -h, --help            show this help message and exit
@@ -43,4 +43,6 @@ options:
   -s SOURCE, --source SOURCE
                         Source Deployment Environment
   -d DEST, --dest DEST  Destination Deployment Environment
+  --env_type {Test,Staging,Production}
+                        Type of any created deploy environments
 ```

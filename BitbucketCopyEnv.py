@@ -1,5 +1,5 @@
 """
-Script to copy one Deployment Environment to an empty one.
+Script to copy one Deployment Environment to another.
 If either source or destination are missing, they will be created
 Any secured variable will be created as secured in the destination, with the value of "none", and must be changed before use.
 

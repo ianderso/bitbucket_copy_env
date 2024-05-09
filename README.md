@@ -1,14 +1,14 @@
 # Bitbucket Deployment Environment Copier
 
-Script to copy one Deployment Environment to an empty one.
-Both Source and Destination environments must exist before running this script.
-There does not seem to be a way to create environemts from the api.
+Script to copy one Deployment Environment to another.
+If either source or destination are missing, they will be created
 Any secured variable will be created as secured in the destination, with the value of "none", and must be changed before use.
 
 ## Requirements
 
 -   Python 3.8 or higher
 -   atlassian-python-api
+-   requests
 
 ## Installation
 

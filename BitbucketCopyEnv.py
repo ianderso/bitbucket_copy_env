@@ -112,16 +112,22 @@ if __name__ == "__main__":
             repository, args.username, args.password, args.dest, args.env_type
         )
 
-    dest_vars = [x.key for x in source_deploy.deployment_environment_variables.each()]
+    dest_vars = dest_deploy.deployment_environment_variables.each()
 
     for var in source_deploy.deployment_environment_variables.each():
-        if not var.value:
-            var.value = "none"
+        dvar = False
+        for dest_var in dest_vars:
+            if var.key == dest_var.key:
+                dvar = dest_var
 
-        dest_var = repository.repository_variables.get(var.key)
-        if dest_var:
-            dest_var.update(value=var.value)
+        if dvar:
+            dvar.update(value=var.value)
         else:
-            dest_deploy.deployment_environment_variables.create(
-                var.key, var.value, False
-            )
+            if var.value:
+                dest_deploy.deployment_environment_variables.create(
+                    var.key, var.value, False
+                )
+            else:
+                dest_deploy.deployment_environment_variables.create(
+                    var.key, "none", True
+                )

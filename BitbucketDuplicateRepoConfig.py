@@ -6,8 +6,6 @@ This script has several functions
 4. Copy Repository Variables from one repository to another
 5. Clone a specific Deployment Environment withing the same repository
 
-
-
 When setting up a new repository, this script can be used to grab all of the deployment environments, and repository variables
 from one repo and create them in another. In this use, specify the source and dest repositories, and NOT the environments.
 
@@ -17,7 +15,6 @@ When adding a new environment in an existing repo, this script can be used to cl
 time to do it manually. In this use, specify source repository, and source and destination environments.
 
 It is possible to use this script to clone from one workspace to another as well if needed.
-
 
 
 usage: BitbucketDuplicateRepoConfig.py [-h] -u USERNAME -p PASSWORD --source_workspace SOURCE_WORKSPACE [--dest_workspace DEST_WORKSPACE] --source_repository
@@ -46,8 +43,7 @@ from argparse import ArgumentParser
 from atlassian.bitbucket import Cloud
 from json import dumps, loads
 from requests.auth import HTTPBasicAuth
-from requests import post, put
-from requests import exceptions
+from requests import post, put, exceptions
 
 
 def get_clone_url(repository, clone_type="https"):
@@ -131,12 +127,7 @@ def enable_pipelines(repository, username, password):
 
 
 def copy_deployment_environment(
-    username,
-    password,
-    source_repository,
-    dest_repository,
-    source_env_slug,
-    dest_env_slug,
+    username, password, source_repository, dest_repository, source_env_slug, dest_env_slug
 ):
     source_deploy = get_deployment_environment(source_repository, source_env_slug)
     if not source_deploy:
@@ -174,16 +165,10 @@ def copy_deployment_environment(
                     var.key, var.value, False
                 )
             else:
-                dest_deploy.deployment_environment_variables.create(
-                    var.key, "none", True
-                )
+                dest_deploy.deployment_environment_variables.create(var.key, "none", True)
 
 
-def copy_repository_variables(
-    source_repository,
-    dest_repository,
-):
-
+def copy_repository_variables(source_repository, dest_repository):
     dest_vars = dest_repository.repository_variables.each()
 
     for var in source_repository.repository_variables.each():
@@ -191,7 +176,6 @@ def copy_repository_variables(
         for dest_var in dest_vars:
             if var.key == dest_var.key:
                 dvar = dest_var
-
         if dvar:
             dvar.update(value=var.value)
         else:
@@ -276,7 +260,4 @@ if __name__ == "__main__":
 
     if args.source_repository != args.dest_repository:
         enable_pipelines(dest_repository, args.username, args.password)
-        copy_repository_variables(
-            source_repository,
-            dest_repository,
-        )
+        copy_repository_variables(source_repository, dest_repository)
